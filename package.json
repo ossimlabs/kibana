@@ -11,7 +11,7 @@
     "dashboarding"
   ],
   "private": true,
-  "version": "6.8.4",
+  "version": "6.8.7",
   "branch": "6.8",
   "types": "./kibana.d.ts",
   "build": {
@@ -168,7 +168,7 @@
     "globby": "^8.0.1",
     "good-squeeze": "2.1.0",
     "h2o2": "^8.1.2",
-    "handlebars": "4.0.13",
+    "handlebars": "4.3.5",
     "hapi": "^17.5.3",
     "hjson": "3.1.0",
     "hoek": "^5.0.4",
@@ -261,7 +261,7 @@
     "webpack-merge": "4.1.4",
     "whatwg-fetch": "^3.0.0",
     "wreck": "^14.0.2",
-    "x-pack": "6.8.4",
+    "x-pack": "6.8.7",
     "yauzl": "2.7.0"
   },
   "devDependencies": {
@@ -340,7 +340,7 @@
     "chance": "1.0.10",
     "cheerio": "0.22.0",
     "chokidar": "1.6.0",
-    "chromedriver": "^76.0.0",
+    "chromedriver": "^78.0.1",
     "classnames": "2.2.5",
     "dedent": "^0.7.0",
     "delete-empty": "^2.0.0",
@@ -428,6 +428,6 @@
   },
   "engines": {
     "node": "10.15.2",
-    "yarn": "^1.10.1"
+    "yarn": "^1.21.1"
   }
 }

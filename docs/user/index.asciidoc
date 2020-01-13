@@ -2,7 +2,7 @@ include::introduction.asciidoc[]
 
 include::setup.asciidoc[]
 
-include::{kib-repo-dir}/monitoring/configuring-monitoring.asciidoc[]
+include::monitoring/configuring-monitoring.asciidoc[]
 
 include::security/securing-kibana.asciidoc[]
 
@@ -20,6 +20,8 @@ include::timelion.asciidoc[]
 
 include::canvas.asciidoc[]
 
+include::graph/index.asciidoc[]
+
 include::ml/index.asciidoc[]
 
 include::{kib-repo-dir}/maps/index.asciidoc[]
@@ -32,11 +34,9 @@ include::{kib-repo-dir}/apm/index.asciidoc[]
 
 include::{kib-repo-dir}/uptime/index.asciidoc[]
 
-include::{kib-repo-dir}/graph/index.asciidoc[]
-
 include::dev-tools.asciidoc[]
 
-include::{kib-repo-dir}/monitoring/index.asciidoc[]
+include::monitoring/index.asciidoc[]
 
 include::management.asciidoc[]
 

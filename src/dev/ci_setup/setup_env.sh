@@ -2,10 +2,14 @@
 
 set -e
 
+if [[ "$CI_ENV_SETUP" ]]; then
+  return 0
+fi
+
 installNode=$1
 
 dir="$(pwd)"
-cacheDir="${CACHE_DIR:-"$HOME/.kibana"}"
+cacheDir="$HOME/.kibana"
 
 RED='\033[0;31m'
 C_RESET='\033[0m' # Reset color
@@ -53,10 +57,10 @@ nodeDir="$cacheDir/node/$nodeVersion"
 
 if [[ "$OS" == "win" ]]; then
   nodeBin="$HOME/node"
-  nodeUrl="https://nodejs.org/dist/v$nodeVersion/node-v$nodeVersion-win-x64.zip"
+  nodeUrl="https://us-central1-elastic-kibana-184716.cloudfunctions.net/kibana-ci-proxy-cache/dist/v$nodeVersion/node-v$nodeVersion-win-x64.zip"
 else
   nodeBin="$nodeDir/bin"
-  nodeUrl="https://nodejs.org/dist/v$nodeVersion/node-v$nodeVersion-linux-x64.tar.gz"
+  nodeUrl="https://us-central1-elastic-kibana-184716.cloudfunctions.net/kibana-ci-proxy-cache/dist/v$nodeVersion/node-v$nodeVersion-linux-x64.tar.gz"
 fi
 
 if [[ "$installNode" == "true" ]]; then
@@ -75,11 +79,11 @@ if [[ "$installNode" == "true" ]]; then
     mkdir -p "$nodeDir"
     if [[ "$OS" == "win" ]]; then
       nodePkg="$nodeDir/${nodeUrl##*/}"
-      curl --silent -o "$nodePkg" "$nodeUrl"
+      curl --silent -L -o "$nodePkg" "$nodeUrl"
       unzip -qo "$nodePkg" -d "$nodeDir"
       mv "${nodePkg%.*}" "$nodeBin"
     else
-      curl --silent "$nodeUrl" | tar -xz -C "$nodeDir" --strip-components=1
+      curl --silent -L "$nodeUrl" | tar -xz -C "$nodeDir" --strip-components=1
     fi
   fi
 fi
@@ -136,3 +140,21 @@ function checks-reporter-with-killswitch() {
 export -f checks-reporter-with-killswitch
 
 source "$KIBANA_DIR/src/dev/ci_setup/load_env_keys.sh"
+
+ES_DIR="$PARENT_DIR/elasticsearch"
+ES_JAVA_PROP_PATH=$ES_DIR/.ci/java-versions.properties
+
+if [[ -d "$ES_DIR" && -f "$ES_JAVA_PROP_PATH" ]]; then
+  ES_BUILD_JAVA="$(grep "^ES_BUILD_JAVA" "$ES_JAVA_PROP_PATH" | cut -d'=' -f2 | tr -d '[:space:]')"
+  export ES_BUILD_JAVA
+
+  if [ -z "$ES_BUILD_JAVA" ]; then
+    echo "Unable to set JAVA_HOME, ES_BUILD_JAVA not present in $ES_JAVA_PROP_PATH"
+    exit 1
+  fi
+
+  echo "Setting JAVA_HOME=$HOME/.java/$ES_BUILD_JAVA"
+  export JAVA_HOME=$HOME/.java/$ES_BUILD_JAVA
+fi
+
+export CI_ENV_SETUP=true
